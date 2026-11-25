@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLRResearchAI | Research Questions</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <h1>SLRResearchAI</h1>
+                <span>Intelligent Systematic Literature Review</span>
+            </div>
+        </div>
+        <div class="api-status">
+            <span id="status-indicator" class="status-dot"></span>
+            <span id="api-status-text">Vérification du serveur...</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <span class="eyebrow">RESEARCH WORKSPACE</span>
+            <h2>Construisez vos questions de recherche</h2>
+            <p>
+                Définissez votre sujet et votre objectif. L'agent IA vous
+                proposera trois questions de recherche que vous pourrez
+                ensuite examiner et valider.
+            </p>
+        </section>
+
+        <section class="panel">
+            <div class="section-heading">
+                <div class="step-number">01</div>
+                <div>
+                    <h3>Informations de recherche</h3>
+                    <p>Présentez le sujet de votre revue systématique.</p>
+                </div>
+            </div>
+
+            <form id="research-form">
+                <div class="form-group">
+                    <label for="topic">Sujet de recherche <span>*</span></label>
+                    <textarea
+                        id="topic"
+                        rows="3"
+                        required
+                        placeholder="Exemple : Utilisation des Large Language Models pour automatiser le screening des articles scientifiques..."
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="objective">Objectif de recherche <span>*</span></label>
+                    <textarea
+                        id="objective"
+                        rows="3"
+                        required
+                        placeholder="Décrivez ce que vous souhaitez analyser ou comprendre..."
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="context">Contexte supplémentaire</label>
+                    <textarea
+                        id="context"
+                        rows="3"
+                        placeholder="Domaine, technologies, période d'étude, contraintes particulières... (facultatif)"
+                    ></textarea>
+                </div>
+
+
+<button type="submit" id="generate-btn" class="btn btn-primary">
+    <span>Générer les questions avec l'IA</span>
+    <span class="arrow">→</span>
+</button>
+
+            </form>
+        </section>
+
+        <div id="message" class="message hidden" role="alert"></div>
+
+        <section id="results-section" class="panel hidden">
+            <div class="section-heading">
+                <div class="step-number">02</div>
+                <div>
+                    <h3>Questions de recherche proposées</h3>
+                    <p>Examinez les propositions de votre agent IA.</p>
+                </div>
+            </div>
+
+            <div class="result-meta">
+                <span id="generation-status" class="status-label">
+                    En attente de validation humaine
+                </span>
+                <span id="session-label"></span>
+            </div>
+
+            <div id="questions-container" class="questions-list"></div>
+
+            <div class="edit-section">
+                <div class="edit-heading">
+                    <div>
+                        <h4>Modifier les questions</h4>
+                        <p>
+                            Vous pouvez modifier le texte. Les questions
+                            seront automatiquement revalidées.
+                        </p>
+                    </div>
+                </div>
+
+                <textarea
+                    id="edited-questions"
+                    rows="9"
+                    placeholder="RQ1. Première question&#10;RQ2. Deuxième question&#10;RQ3. Troisième question"
+                ></textarea>
+
+                <button id="edit-btn" class="btn btn-secondary">
+                    Enregistrer les modifications
+                </button>
+            </div>
+
+            <div class="decision-section">
+                <h4>Décision humaine</h4>
+                <p>
+                    Après examen des questions, choisissez de les accepter
+                    ou de les rejeter.
+                </p>
+
+                <div class="form-group">
+                    <label for="rejection-reason">
+                        Motif du rejet (facultatif)
+                    </label>
+                    <textarea
+                        id="rejection-reason"
+                        rows="2"
+                        placeholder="Expliquez pourquoi vous rejetez ces questions..."
+                    ></textarea>
+                </div>
+
+                <div class="decision-buttons">
+                    <button id="reject-btn" class="btn btn-danger">
+                        Rejeter les questions
+                    </button>
+                    <button id="approve-btn" class="btn btn-success">
+                        Approuver les questions
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="final-section" class="panel final-panel hidden">
+            <div class="final-icon" id="final-icon">✓</div>
+            <h3 id="final-title">Décision enregistrée</h3>
+            <p id="final-description"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>SLRResearchAI · Human-in-the-Loop Research Assistant</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

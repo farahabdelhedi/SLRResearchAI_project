@@ -1,7 +1,7 @@
-from slrresearch.demo import build_demo_policy, build_demo_registry
-from slrresearch.handoff import DEFAULT_ARTIFACT_PATH, load_search_plan
-from slrresearch.react_agent import run_react_agent
-from slrresearch.workflow import run_tool_workflow
+from slrresearch2.demo import build_demo_policy, build_demo_registry
+from slrresearch2.handoff import DEFAULT_ARTIFACT_PATH, load_search_plan
+from slrresearch2.react_agent import run_react_agent
+from slrresearch2.workflow import run_tool_workflow
 
 
 OBJECTIVE = "Trouver des études sur les LLM pour le screening des SLR"
