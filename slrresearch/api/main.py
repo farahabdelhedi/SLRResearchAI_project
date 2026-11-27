@@ -18,7 +18,10 @@ from slrresearch.schemas.query_construction import QueryConstructionResult
 
 from slrresearch.api.session_store import create_session, get_session
 from fastapi.middleware.cors import CORSMiddleware
-
+from slrresearch.agents.llm_screening_agent import LLMScreeningAgent
+from slrresearch.agents.screening_agent import ScreeningAgent
+from slrresearch.schemas.screening import ScreeningCriteria
+from slrresearch.core.react.contracts import PaperRecord
 app = FastAPI(
     title="SLRResearchAI API",
     description="API de génération et validation des questions de recherche.",
@@ -64,6 +67,15 @@ research_question_workflow = ResearchQuestionWorkflow(
 # Initialisation du Search Execution Agent
 search_execution_agent = SearchExecutionAgent(model=model)
 
+# Initialisation du Screening Agent
+llm_screening_agent = LLMScreeningAgent(
+    model=model,
+    provider=settings.provider,
+)
+
+screening_agent = ScreeningAgent(
+    llm_agent=llm_screening_agent,
+)
 class ResearchQuestionRequest(BaseModel):
     topic: str
     objective: str
@@ -80,7 +92,9 @@ class SearchExecutionRequest(BaseModel):
     query_result: QueryConstructionResult
     max_steps: int = 5
     target_papers: int = 10
-
+class ScreeningRequest(BaseModel):
+    papers: list[PaperRecord]
+    criteria: ScreeningCriteria
 
 @app.get("/")
 def home():
@@ -263,4 +277,25 @@ def execute_search(request: SearchExecutionRequest):
         raise HTTPException(
             status_code=500,
             detail=f"Erreur pendant l'exécution de la recherche : {str(error)}",
+        )
+@app.post("/api/screening/execute")
+def execute_screening(request: ScreeningRequest):
+    try:
+        result = screening_agent.run(
+            papers=request.papers,
+            criteria=request.criteria,
+        )
+
+        return result.model_dump()
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error),
+        )
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur pendant le screening : {str(error)}",
         )
